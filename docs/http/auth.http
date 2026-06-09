@@ -1,0 +1,22 @@
+### Register
+POST http://localhost:8080/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "Str0ngPass!2026",
+  "displayName": "Demo User"
+}
+
+### Login
+POST http://localhost:8080/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "Str0ngPass!2026"
+}
+
+### Current profile
+GET http://localhost:8080/api/v1/users/me
+Authorization: Bearer {{accessToken}}
