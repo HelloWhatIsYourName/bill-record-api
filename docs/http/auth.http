@@ -1,5 +1,13 @@
-### Register
-POST http://localhost:8080/api/v1/auth/register
+@baseUrl = http://localhost:8080/api/v1
+@accessToken = paste-token-here
+@accountId = paste-account-id-here
+@targetAccountId = paste-target-account-id-here
+@categoryId = paste-category-id-here
+@transactionId = paste-transaction-id-here
+@budgetId = paste-budget-id-here
+
+### Register / 注册
+POST {{baseUrl}}/auth/register
 Content-Type: application/json
 
 {
@@ -8,8 +16,8 @@ Content-Type: application/json
   "displayName": "Demo User"
 }
 
-### Login
-POST http://localhost:8080/api/v1/auth/login
+### Login / 登录
+POST {{baseUrl}}/auth/login
 Content-Type: application/json
 
 {
@@ -17,6 +25,114 @@ Content-Type: application/json
   "password": "Str0ngPass!2026"
 }
 
-### Current profile
-GET http://localhost:8080/api/v1/users/me
+### Current profile / 当前用户
+GET {{baseUrl}}/users/me
+Authorization: Bearer {{accessToken}}
+
+### Create account / 创建账户
+POST {{baseUrl}}/accounts
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "现金钱包",
+  "type": "CASH",
+  "openingBalance": 1000.00,
+  "currency": "CNY"
+}
+
+### List accounts / 账户列表
+GET {{baseUrl}}/accounts
+Authorization: Bearer {{accessToken}}
+
+### Create category / 创建分类
+POST {{baseUrl}}/categories
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "name": "餐饮",
+  "type": "EXPENSE",
+  "color": "#EF4444",
+  "icon": "utensils"
+}
+
+### List expense categories / 支出分类列表
+GET {{baseUrl}}/categories?type=EXPENSE
+Authorization: Bearer {{accessToken}}
+
+### Create expense transaction / 创建支出交易
+POST {{baseUrl}}/transactions
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "type": "EXPENSE",
+  "accountId": "{{accountId}}",
+  "categoryId": "{{categoryId}}",
+  "amount": 25.50,
+  "currency": "CNY",
+  "transactionTime": "2026-06-09T08:30:00Z",
+  "note": "Lunch"
+}
+
+### Create transfer / 创建转账
+POST {{baseUrl}}/transactions
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "type": "TRANSFER",
+  "accountId": "{{accountId}}",
+  "transferAccountId": "{{targetAccountId}}",
+  "amount": 100.00,
+  "currency": "CNY",
+  "transactionTime": "2026-06-09T09:00:00Z",
+  "note": "Move cash"
+}
+
+### List transactions / 交易列表
+GET {{baseUrl}}/transactions?type=EXPENSE&accountId={{accountId}}&categoryId={{categoryId}}
+Authorization: Bearer {{accessToken}}
+
+### Delete transaction / 删除交易
+DELETE {{baseUrl}}/transactions/{{transactionId}}
+Authorization: Bearer {{accessToken}}
+
+### Create monthly budget / 创建月预算
+POST {{baseUrl}}/budgets
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "categoryId": "{{categoryId}}",
+  "month": "2026-06",
+  "amount": 1000.00,
+  "currency": "CNY"
+}
+
+### List monthly budgets / 月预算列表
+GET {{baseUrl}}/budgets?month=2026-06
+Authorization: Bearer {{accessToken}}
+
+### Update budget / 更新预算
+PATCH {{baseUrl}}/budgets/{{budgetId}}
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+  "amount": 1200.00,
+  "currency": "CNY"
+}
+
+### Monthly summary report / 月度汇总报表
+GET {{baseUrl}}/reports/monthly-summary?month=2026-06
+Authorization: Bearer {{accessToken}}
+
+### Category spending report / 分类支出报表
+GET {{baseUrl}}/reports/category-spending?from=2026-06-01T00:00:00Z&to=2026-07-01T00:00:00Z
+Authorization: Bearer {{accessToken}}
+
+### Cash flow report / 现金流报表
+GET {{baseUrl}}/reports/cash-flow?from=2026-06-01T00:00:00Z&to=2026-07-01T00:00:00Z
 Authorization: Bearer {{accessToken}}
