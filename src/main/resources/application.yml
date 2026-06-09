@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: bill-record-api
+  datasource:
+    url: ${BILL_RECORD_DB_URL:jdbc:postgresql://localhost:5432/bill_record}
+    username: ${BILL_RECORD_DB_USERNAME:bill_record}
+    password: ${BILL_RECORD_DB_PASSWORD:bill_record}
+  flyway:
+    enabled: true
+  jackson:
+    time-zone: UTC
+    default-property-inclusion: non_null
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+
+server:
+  port: ${SERVER_PORT:8080}
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+app:
+  security:
+    jwt:
+      issuer: bill-record-api
+      secret: ${BILL_RECORD_JWT_SECRET:change-me-change-me-change-me-change-me}
+      access-token-ttl: PT30M
+      refresh-token-ttl: P30D

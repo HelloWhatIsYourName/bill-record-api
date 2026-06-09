@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: bill-record-postgres
+    environment:
+      POSTGRES_DB: bill_record
+      POSTGRES_USER: bill_record
+      POSTGRES_PASSWORD: bill_record
+      TZ: UTC
+    ports:
+      - "5432:5432"
+    volumes:
+      - bill-record-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bill_record -d bill_record"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  bill-record-postgres-data:
