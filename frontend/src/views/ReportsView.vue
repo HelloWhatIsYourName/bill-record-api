@@ -3,9 +3,11 @@ import { computed, onMounted, ref } from 'vue'
 
 import EmptyState from '@/components/EmptyState.vue'
 import { useLedgerStore } from '@/stores/ledger'
+import { usePreferencesStore } from '@/stores/preferences'
 import { formatMoney, toMonthInputValue } from '@/utils/format'
 
 const ledger = useLedgerStore()
+const preferences = usePreferencesStore()
 const month = ref(ledger.month || toMonthInputValue())
 
 const flowMax = computed(() => {
@@ -28,12 +30,12 @@ onMounted(reload)
   <section class="page">
     <header class="page-header">
       <div>
-        <h1>Reports</h1>
-        <p>{{ month }} 报表</p>
+        <h1>{{ preferences.t('reports.title') }}</h1>
+        <p>{{ month }} {{ preferences.t('reports.description') }}</p>
       </div>
       <div class="toolbar">
         <input v-model="month" class="input" type="month" @change="reload" />
-        <button class="button" type="button" @click="reload">刷新</button>
+        <button class="button" type="button" @click="reload">{{ preferences.t('common.refresh') }}</button>
       </div>
     </header>
 
@@ -41,19 +43,19 @@ onMounted(reload)
 
     <div class="grid grid--stats">
       <div class="stat">
-        <span>收入</span>
+        <span>{{ preferences.t('dashboard.income') }}</span>
         <strong class="tone--success">{{ formatMoney(ledger.summary?.income ?? 0, 'CNY') }}</strong>
       </div>
       <div class="stat">
-        <span>支出</span>
+        <span>{{ preferences.t('dashboard.expense') }}</span>
         <strong class="tone--danger">{{ formatMoney(ledger.summary?.expense ?? 0, 'CNY') }}</strong>
       </div>
       <div class="stat">
-        <span>净额</span>
+        <span>{{ preferences.t('dashboard.net') }}</span>
         <strong>{{ formatMoney(ledger.summary?.net ?? 0, 'CNY') }}</strong>
       </div>
       <div class="stat">
-        <span>账户数</span>
+        <span>{{ preferences.t('reports.accountCount') }}</span>
         <strong>{{ ledger.summary?.accountBalances.length ?? 0 }}</strong>
       </div>
     </div>
@@ -61,14 +63,14 @@ onMounted(reload)
     <div class="grid grid--two">
       <section class="box">
         <header class="box__header">
-          <h2>分类支出</h2>
+          <h2>{{ preferences.t('dashboard.categorySpending') }}</h2>
         </header>
         <div class="table-wrap">
           <table v-if="ledger.categorySpending.length" class="table">
             <thead>
               <tr>
-                <th>分类</th>
-                <th>金额</th>
+                <th>{{ preferences.t('categories.title') }}</th>
+                <th>{{ preferences.t('transactions.amount') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -78,20 +80,20 @@ onMounted(reload)
               </tr>
             </tbody>
           </table>
-          <EmptyState v-else icon="category" title="暂无分类支出" text="当前月份没有支出记录" />
+          <EmptyState v-else icon="category" :title="preferences.t('reports.noCategorySpending')" :text="preferences.t('empty.reportsCategorySpending')" />
         </div>
       </section>
 
       <section class="box">
         <header class="box__header">
-          <h2>账户余额</h2>
+          <h2>{{ preferences.t('dashboard.accountBalances') }}</h2>
         </header>
         <div class="table-wrap">
           <table v-if="ledger.summary?.accountBalances.length" class="table">
             <thead>
               <tr>
-                <th>账户</th>
-                <th>余额</th>
+                <th>{{ preferences.t('transactions.account') }}</th>
+                <th>{{ preferences.t('dashboard.accountBalances') }}</th>
               </tr>
             </thead>
             <tbody>
@@ -101,14 +103,14 @@ onMounted(reload)
               </tr>
             </tbody>
           </table>
-          <EmptyState v-else icon="account_balance_wallet" title="暂无账户余额" text="账户余额为空" />
+          <EmptyState v-else icon="account_balance_wallet" :title="preferences.t('reports.noAccountBalances')" :text="preferences.t('empty.accounts')" />
         </div>
       </section>
     </div>
 
     <section class="box">
       <header class="box__header">
-        <h2>现金流</h2>
+        <h2>{{ preferences.t('dashboard.cashFlow') }}</h2>
       </header>
       <div class="box__body">
         <div v-if="ledger.cashFlow.length" class="flow-chart">
@@ -125,7 +127,7 @@ onMounted(reload)
             <strong class="tone--danger">{{ formatMoney(point.expense, 'CNY') }}</strong>
           </div>
         </div>
-        <EmptyState v-else icon="analytics" title="暂无现金流" text="当前月份没有现金流记录" />
+        <EmptyState v-else icon="analytics" :title="preferences.t('dashboard.cashFlow')" :text="preferences.t('empty.cashFlow')" />
       </div>
     </section>
   </section>

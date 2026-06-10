@@ -5,7 +5,8 @@ import AppIcon from '@/components/AppIcon.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import ModalPanel from '@/components/ModalPanel.vue'
 import { useLedgerStore } from '@/stores/ledger'
-import { categoryTypeLabels, transactionTone, transactionTypeLabels } from '@/utils/domain'
+import { usePreferencesStore } from '@/stores/preferences'
+import { transactionTone } from '@/utils/domain'
 import { toErrorMessage } from '@/utils/errors'
 import { formatMoney, fromDateTimeInputValue, toDateTimeInputValue } from '@/utils/format'
 import type { Transaction, TransactionType } from '@/api/types'
@@ -23,6 +24,7 @@ type TransactionForm = {
 }
 
 const ledger = useLedgerStore()
+const preferences = usePreferencesStore()
 const modalOpen = ref(false)
 const saving = ref(false)
 const error = ref<string | null>(null)
@@ -65,16 +67,16 @@ function resetForm() {
 
 function accountName(id?: string | null) {
   if (!id) {
-    return '账户'
+    return preferences.t('transactions.account')
   }
-  return ledger.accountById.get(id)?.name ?? '账户'
+  return ledger.accountById.get(id)?.name ?? preferences.t('transactions.account')
 }
 
 function categoryName(id?: string | null) {
   if (!id) {
-    return '无分类'
+    return preferences.t('common.none')
   }
-  return ledger.categoryById.get(id)?.name ?? '分类'
+  return ledger.categoryById.get(id)?.name ?? preferences.t('categories.title')
 }
 
 function openCreate() {
@@ -128,7 +130,7 @@ async function submit() {
 }
 
 async function remove(transaction: Transaction) {
-  if (!window.confirm('删除这条交易？')) {
+  if (!window.confirm(preferences.t('common.confirmDelete'))) {
     return
   }
   await ledger.deleteTransaction(transaction.id)
@@ -157,11 +159,11 @@ onMounted(async () => {
     <header class="page-header">
       <div>
         <h1>Transactions</h1>
-        <p>收入、支出和转账</p>
+        <p>{{ preferences.t('transactions.description') }}</p>
       </div>
       <button class="button button--primary" type="button" @click="openCreate">
         <AppIcon name="add" />
-        新增交易
+        {{ preferences.t('transactions.new') }}
       </button>
     </header>
 
@@ -169,32 +171,32 @@ onMounted(async () => {
 
     <section class="box">
       <header class="box__header">
-        <h2>筛选</h2>
-        <button class="button" type="button" @click="applyFilters">应用</button>
+        <h2>{{ preferences.t('transactions.filters') }}</h2>
+        <button class="button" type="button" @click="applyFilters">{{ preferences.t('common.apply') }}</button>
       </header>
       <div class="box__body form-grid">
         <div class="form-row">
-          <label for="filter-type">类型</label>
+          <label for="filter-type">{{ preferences.t('transactions.type') }}</label>
           <select id="filter-type" v-model="filters.type" class="select">
-            <option value="">全部</option>
-            <option value="INCOME">收入</option>
-            <option value="EXPENSE">支出</option>
-            <option value="TRANSFER">转账</option>
+            <option value="">{{ preferences.t('domain.all') }}</option>
+            <option value="INCOME">{{ preferences.t('domain.transaction.INCOME') }}</option>
+            <option value="EXPENSE">{{ preferences.t('domain.transaction.EXPENSE') }}</option>
+            <option value="TRANSFER">{{ preferences.t('domain.transaction.TRANSFER') }}</option>
           </select>
         </div>
         <div class="form-row">
-          <label for="filter-account">账户</label>
+          <label for="filter-account">{{ preferences.t('transactions.account') }}</label>
           <select id="filter-account" v-model="filters.accountId" class="select">
-            <option value="">全部</option>
+            <option value="">{{ preferences.t('domain.all') }}</option>
             <option v-for="account in ledger.accounts" :key="account.id" :value="account.id">{{ account.name }}</option>
           </select>
         </div>
         <div class="form-row">
-          <label for="filter-category">分类</label>
+          <label for="filter-category">{{ preferences.t('categories.title') }}</label>
           <select id="filter-category" v-model="filters.categoryId" class="select">
-            <option value="">全部</option>
+            <option value="">{{ preferences.t('domain.all') }}</option>
             <option v-for="category in ledger.categories" :key="category.id" :value="category.id">
-              {{ category.name }} / {{ categoryTypeLabels[category.type] }}
+              {{ category.name }} / {{ preferences.t(`domain.category.${category.type}`) }}
             </option>
           </select>
         </div>
@@ -203,26 +205,26 @@ onMounted(async () => {
 
     <section class="box">
       <header class="box__header">
-        <h2>交易列表</h2>
+        <h2>{{ preferences.t('transactions.list') }}</h2>
       </header>
       <div class="table-wrap">
         <table v-if="ledger.transactions.length" class="table">
           <thead>
             <tr>
-              <th>类型</th>
-              <th>时间</th>
-              <th>账户</th>
-              <th>分类/目标</th>
-              <th>金额</th>
-              <th>备注</th>
-              <th>操作</th>
+              <th>{{ preferences.t('transactions.type') }}</th>
+              <th>{{ preferences.t('transactions.time') }}</th>
+              <th>{{ preferences.t('transactions.account') }}</th>
+              <th>{{ preferences.t('transactions.categoryOrTarget') }}</th>
+              <th>{{ preferences.t('transactions.amount') }}</th>
+              <th>{{ preferences.t('transactions.note') }}</th>
+              <th>{{ preferences.t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="transaction in ledger.transactions" :key="transaction.id">
               <td>
                 <span class="label" :class="`label--${transactionTone[transaction.type]}`">
-                  {{ transactionTypeLabels[transaction.type] }}
+                  {{ preferences.t(`domain.transaction.${transaction.type}`) }}
                 </span>
               </td>
               <td>{{ transaction.transactionTime.slice(0, 10) }}</td>
@@ -233,68 +235,68 @@ onMounted(async () => {
               </td>
               <td>{{ transaction.note || '-' }}</td>
               <td>
-                <button class="icon-button" type="button" aria-label="编辑" @click="openEdit(transaction)">
+                <button class="icon-button" type="button" :aria-label="preferences.t('common.edit')" @click="openEdit(transaction)">
                   <AppIcon name="edit" />
                 </button>
-                <button class="icon-button button--danger" type="button" aria-label="删除" @click="remove(transaction)">
+                <button class="icon-button button--danger" type="button" :aria-label="preferences.t('common.delete')" @click="remove(transaction)">
                   <AppIcon name="delete" />
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
-        <EmptyState v-else icon="receipt_long" title="暂无交易" text="交易列表为空" />
+        <EmptyState v-else icon="receipt_long" :title="preferences.t('transactions.empty')" :text="preferences.t('empty.transactions')" />
       </div>
     </section>
 
-    <ModalPanel v-if="modalOpen" :title="form.id ? '编辑交易' : '新增交易'" @close="modalOpen = false">
+    <ModalPanel v-if="modalOpen" :title="form.id ? preferences.t('transactions.edit') : preferences.t('transactions.new')" @close="modalOpen = false">
       <form class="box__body form-grid" @submit.prevent="submit">
         <div class="form-row">
-          <label for="tx-type">类型</label>
+          <label for="tx-type">{{ preferences.t('transactions.type') }}</label>
           <select id="tx-type" v-model="form.type" class="select">
-            <option value="INCOME">收入</option>
-            <option value="EXPENSE">支出</option>
-            <option value="TRANSFER">转账</option>
+            <option value="INCOME">{{ preferences.t('domain.transaction.INCOME') }}</option>
+            <option value="EXPENSE">{{ preferences.t('domain.transaction.EXPENSE') }}</option>
+            <option value="TRANSFER">{{ preferences.t('domain.transaction.TRANSFER') }}</option>
           </select>
         </div>
         <div class="form-row">
-          <label for="tx-account">账户</label>
+          <label for="tx-account">{{ preferences.t('transactions.account') }}</label>
           <select id="tx-account" v-model="form.accountId" class="select" required>
             <option v-for="account in ledger.accounts" :key="account.id" :value="account.id">{{ account.name }}</option>
           </select>
         </div>
         <div v-if="form.type === 'TRANSFER'" class="form-row">
-          <label for="tx-transfer-account">目标账户</label>
+          <label for="tx-transfer-account">{{ preferences.t('transactions.targetAccount') }}</label>
           <select id="tx-transfer-account" v-model="form.transferAccountId" class="select" required>
             <option v-for="account in ledger.accounts" :key="account.id" :value="account.id">{{ account.name }}</option>
           </select>
         </div>
         <div v-else class="form-row">
-          <label for="tx-category">分类</label>
+          <label for="tx-category">{{ preferences.t('categories.title') }}</label>
           <select id="tx-category" v-model="form.categoryId" class="select" required>
             <option v-for="category in availableCategories" :key="category.id" :value="category.id">{{ category.name }}</option>
           </select>
         </div>
         <div class="form-row">
-          <label for="tx-amount">金额</label>
+          <label for="tx-amount">{{ preferences.t('transactions.amount') }}</label>
           <input id="tx-amount" v-model="form.amount" class="input" type="number" min="0.01" step="0.01" required />
         </div>
         <div class="form-row">
-          <label for="tx-currency">币种</label>
+          <label for="tx-currency">{{ preferences.t('common.currency') }}</label>
           <input id="tx-currency" v-model.trim="form.currency" class="input" maxlength="3" required />
         </div>
         <div class="form-row form-row--full">
-          <label for="tx-time">时间</label>
+          <label for="tx-time">{{ preferences.t('transactions.time') }}</label>
           <input id="tx-time" v-model="form.transactionTime" class="input" type="datetime-local" required />
         </div>
         <div class="form-row form-row--full">
-          <label for="tx-note">备注</label>
+          <label for="tx-note">{{ preferences.t('transactions.note') }}</label>
           <textarea id="tx-note" v-model.trim="form.note" class="textarea" maxlength="500" />
         </div>
         <p v-if="error" class="error-banner form-row--full">{{ error }}</p>
         <div class="form-actions form-row--full">
-          <button class="button" type="button" @click="modalOpen = false">取消</button>
-          <button class="button button--primary" type="submit" :disabled="saving">保存</button>
+          <button class="button" type="button" @click="modalOpen = false">{{ preferences.t('common.cancel') }}</button>
+          <button class="button button--primary" type="submit" :disabled="saving">{{ preferences.t('common.save') }}</button>
         </div>
       </form>
     </ModalPanel>

@@ -3,19 +3,21 @@ import { computed } from 'vue'
 import { RouterLink, RouterView, useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
+import { usePreferencesStore } from '@/stores/preferences'
 
 import AppIcon from './AppIcon.vue'
 
 const auth = useAuthStore()
+const preferences = usePreferencesStore()
 const router = useRouter()
 
 const navItems = [
-  { to: '/', icon: 'dashboard', label: 'Dashboard' },
-  { to: '/transactions', icon: 'receipt_long', label: 'Transactions' },
-  { to: '/accounts', icon: 'account_balance_wallet', label: 'Accounts' },
-  { to: '/categories', icon: 'category', label: 'Categories' },
-  { to: '/budgets', icon: 'savings', label: 'Budgets' },
-  { to: '/reports', icon: 'analytics', label: 'Reports' },
+  { to: '/', icon: 'dashboard', labelKey: 'nav.dashboard' },
+  { to: '/transactions', icon: 'receipt_long', labelKey: 'nav.transactions' },
+  { to: '/accounts', icon: 'account_balance_wallet', labelKey: 'nav.accounts' },
+  { to: '/categories', icon: 'category', labelKey: 'nav.categories' },
+  { to: '/budgets', icon: 'savings', labelKey: 'nav.budgets' },
+  { to: '/reports', icon: 'analytics', labelKey: 'nav.reports' },
 ]
 
 const initials = computed(() => auth.user?.displayName?.slice(0, 1).toUpperCase() ?? 'U')
@@ -36,18 +38,22 @@ function logout() {
       <div v-if="auth.user" class="topbar__user">
         <span class="avatar">{{ initials }}</span>
         <span class="topbar__name">{{ auth.user.displayName }}</span>
+        <button class="button button--subtle" type="button" @click="preferences.toggleLanguage">
+          <AppIcon name="translate" />
+          {{ preferences.languageLabel }}
+        </button>
         <button class="button button--subtle" type="button" @click="logout">
           <AppIcon name="logout" />
-          退出
+          {{ preferences.t('common.logout') }}
         </button>
       </div>
     </header>
 
     <div class="app-shell__body">
-      <aside class="sidebar" aria-label="主导航">
+      <aside class="sidebar" :aria-label="preferences.t('nav.dashboard')">
         <RouterLink v-for="item in navItems" :key="item.to" class="nav-item" :to="item.to">
           <AppIcon :name="item.icon" />
-          <span>{{ item.label }}</span>
+          <span>{{ preferences.t(item.labelKey) }}</span>
         </RouterLink>
       </aside>
 
@@ -57,4 +63,3 @@ function logout() {
     </div>
   </div>
 </template>
-

@@ -7,6 +7,7 @@ import ModalPanel from '@/components/ModalPanel.vue'
 import ProgressBar from '@/components/ProgressBar.vue'
 import type { Budget } from '@/api/types'
 import { useLedgerStore } from '@/stores/ledger'
+import { usePreferencesStore } from '@/stores/preferences'
 import { toErrorMessage } from '@/utils/errors'
 import { formatMoney, toMonthInputValue } from '@/utils/format'
 
@@ -19,6 +20,7 @@ type BudgetForm = {
 }
 
 const ledger = useLedgerStore()
+const preferences = usePreferencesStore()
 const month = ref(ledger.month || toMonthInputValue())
 const modalOpen = ref(false)
 const saving = ref(false)
@@ -36,7 +38,7 @@ function freshForm(): BudgetForm {
 }
 
 function categoryName(id: string) {
-  return ledger.categoryById.get(id)?.name ?? '分类'
+  return ledger.categoryById.get(id)?.name ?? preferences.t('categories.title')
 }
 
 function openCreate() {
@@ -90,7 +92,7 @@ async function submit() {
 }
 
 async function remove(budget: Budget) {
-  if (!window.confirm(`删除预算 ${categoryName(budget.categoryId)}？`)) {
+  if (!window.confirm(`${preferences.t('common.confirmDelete')} ${categoryName(budget.categoryId)}`)) {
     return
   }
   await ledger.deleteBudget(budget.id)
@@ -103,14 +105,14 @@ onMounted(reload)
   <section class="page">
     <header class="page-header">
       <div>
-        <h1>Budgets</h1>
-        <p>{{ month }} 月度预算</p>
+        <h1>{{ preferences.t('budgets.title') }}</h1>
+        <p>{{ month }} {{ preferences.t('budgets.description') }}</p>
       </div>
       <div class="toolbar">
         <input v-model="month" class="input" type="month" @change="reload" />
         <button class="button button--primary" type="button" @click="openCreate">
           <AppIcon name="add" />
-          新增预算
+          {{ preferences.t('budgets.new') }}
         </button>
       </div>
     </header>
@@ -119,18 +121,18 @@ onMounted(reload)
 
     <section class="box">
       <header class="box__header">
-        <h2>预算列表</h2>
+        <h2>{{ preferences.t('budgets.list') }}</h2>
       </header>
       <div class="table-wrap">
         <table v-if="ledger.budgets.length" class="table">
           <thead>
             <tr>
-              <th>分类</th>
-              <th>预算</th>
-              <th>已用</th>
-              <th>剩余</th>
-              <th>进度</th>
-              <th>操作</th>
+              <th>{{ preferences.t('categories.title') }}</th>
+              <th>{{ preferences.t('budgets.amount') }}</th>
+              <th>{{ preferences.t('budgets.spent') }}</th>
+              <th>{{ preferences.t('budgets.remaining') }}</th>
+              <th>{{ preferences.t('budgets.progress') }}</th>
+              <th>{{ preferences.t('common.actions') }}</th>
             </tr>
           </thead>
           <tbody>
@@ -143,44 +145,44 @@ onMounted(reload)
                 <ProgressBar :label="categoryName(budget.categoryId)" :value="budget.spent" :max="budget.amount" />
               </td>
               <td>
-                <button class="icon-button" type="button" aria-label="编辑" @click="openEdit(budget)">
+                <button class="icon-button" type="button" :aria-label="preferences.t('common.edit')" @click="openEdit(budget)">
                   <AppIcon name="edit" />
                 </button>
-                <button class="icon-button button--danger" type="button" aria-label="删除" @click="remove(budget)">
+                <button class="icon-button button--danger" type="button" :aria-label="preferences.t('common.delete')" @click="remove(budget)">
                   <AppIcon name="delete" />
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
-        <EmptyState v-else icon="savings" title="暂无预算" text="预算列表为空" />
+        <EmptyState v-else icon="savings" :title="preferences.t('budgets.empty')" :text="preferences.t('common.empty')" />
       </div>
     </section>
 
-    <ModalPanel v-if="modalOpen" :title="form.id ? '编辑预算' : '新增预算'" @close="modalOpen = false">
+    <ModalPanel v-if="modalOpen" :title="form.id ? preferences.t('budgets.edit') : preferences.t('budgets.new')" @close="modalOpen = false">
       <form class="box__body form-grid" @submit.prevent="submit">
         <div class="form-row">
-          <label for="budget-month">月份</label>
+          <label for="budget-month">{{ preferences.t('budgets.month') }}</label>
           <input id="budget-month" v-model="form.month" class="input" type="month" :disabled="Boolean(form.id)" required />
         </div>
         <div class="form-row">
-          <label for="budget-category">支出分类</label>
+          <label for="budget-category">{{ preferences.t('budgets.category') }}</label>
           <select id="budget-category" v-model="form.categoryId" class="select" :disabled="Boolean(form.id)" required>
             <option v-for="category in ledger.expenseCategories" :key="category.id" :value="category.id">{{ category.name }}</option>
           </select>
         </div>
         <div class="form-row">
-          <label for="budget-amount">金额</label>
+          <label for="budget-amount">{{ preferences.t('transactions.amount') }}</label>
           <input id="budget-amount" v-model="form.amount" class="input" type="number" min="0.01" step="0.01" required />
         </div>
         <div class="form-row">
-          <label for="budget-currency">币种</label>
+          <label for="budget-currency">{{ preferences.t('common.currency') }}</label>
           <input id="budget-currency" v-model.trim="form.currency" class="input" maxlength="3" required />
         </div>
         <p v-if="error" class="error-banner form-row--full">{{ error }}</p>
         <div class="form-actions form-row--full">
-          <button class="button" type="button" @click="modalOpen = false">取消</button>
-          <button class="button button--primary" type="submit" :disabled="saving">保存</button>
+          <button class="button" type="button" @click="modalOpen = false">{{ preferences.t('common.cancel') }}</button>
+          <button class="button button--primary" type="submit" :disabled="saving">{{ preferences.t('common.save') }}</button>
         </div>
       </form>
     </ModalPanel>

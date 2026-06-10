@@ -88,7 +88,7 @@ export const useAuthStore = defineStore('auth', {
       try {
         this.setSession(await request())
       } catch (error) {
-        this.error = error instanceof Error ? error.message : '请求失败'
+        this.error = error instanceof Error ? error.message : 'Request failed'
         throw error
       } finally {
         this.loading = false
@@ -96,4 +96,3 @@ export const useAuthStore = defineStore('auth', {
     },
   },
 })
-

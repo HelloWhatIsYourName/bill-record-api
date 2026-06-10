@@ -10,6 +10,5 @@ export function toErrorMessage(error: unknown) {
     return error.message
   }
 
-  return '请求失败'
+  return 'Request failed'
 }
-

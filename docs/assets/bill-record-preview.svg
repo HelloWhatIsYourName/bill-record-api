@@ -1,0 +1,88 @@
+<svg width="1440" height="900" viewBox="0 0 1440 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1440" height="900" fill="#f6f8fa"/>
+  <rect x="90" y="70" width="1260" height="760" rx="10" fill="#ffffff" stroke="#d0d7de"/>
+  <rect x="90" y="70" width="1260" height="58" rx="10" fill="#ffffff"/>
+  <path d="M90 128H1350" stroke="#d0d7de"/>
+  <rect x="116" y="86" width="32" height="32" rx="6" fill="#24292f"/>
+  <text x="126" y="107" fill="#ffffff" font-family="Arial, sans-serif" font-size="12" font-weight="700">BR</text>
+  <text x="160" y="107" fill="#1f2328" font-family="Arial, sans-serif" font-size="16" font-weight="700">Bill Record</text>
+  <rect x="1134" y="86" width="74" height="32" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="1156" y="107" fill="#1f2328" font-family="Arial, sans-serif" font-size="13" font-weight="700">EN</text>
+  <circle cx="1235" cy="102" r="16" fill="#ddf4ff" stroke="#b6e3ff"/>
+  <text x="1230" y="107" fill="#0550ae" font-family="Arial, sans-serif" font-size="13" font-weight="700">U</text>
+  <rect x="1264" y="86" width="60" height="32" rx="6" fill="#f6f8fa" stroke="#d0d7de"/>
+  <text x="1280" y="107" fill="#1f2328" font-family="Arial, sans-serif" font-size="13" font-weight="700">Logout</text>
+
+  <rect x="90" y="128" width="210" height="702" fill="#ffffff"/>
+  <path d="M300 128V830" stroke="#d0d7de"/>
+  <rect x="112" y="154" width="166" height="38" rx="6" fill="#f6f8fa"/>
+  <text x="148" y="178" fill="#1f2328" font-family="Arial, sans-serif" font-size="14" font-weight="700">Dashboard</text>
+  <text x="148" y="228" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Transactions</text>
+  <text x="148" y="276" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Accounts</text>
+  <text x="148" y="324" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Categories</text>
+  <text x="148" y="372" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Budgets</text>
+  <text x="148" y="420" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Reports</text>
+
+  <text x="336" y="180" fill="#1f2328" font-family="Arial, sans-serif" font-size="28" font-weight="700">Dashboard</text>
+  <text x="336" y="206" fill="#656d76" font-family="Arial, sans-serif" font-size="14">2026-06 Monthly overview</text>
+  <rect x="1168" y="164" width="132" height="34" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <text x="1192" y="186" fill="#1f2328" font-family="Arial, sans-serif" font-size="14">2026-06</text>
+
+  <g>
+    <rect x="336" y="232" width="220" height="104" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+    <text x="356" y="264" fill="#656d76" font-family="Arial, sans-serif" font-size="13">Income</text>
+    <text x="356" y="306" fill="#1a7f37" font-family="Arial, sans-serif" font-size="28" font-weight="700">CNY 12,800.00</text>
+  </g>
+  <g>
+    <rect x="580" y="232" width="220" height="104" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+    <text x="600" y="264" fill="#656d76" font-family="Arial, sans-serif" font-size="13">Expense</text>
+    <text x="600" y="306" fill="#cf222e" font-family="Arial, sans-serif" font-size="28" font-weight="700">CNY 4,260.50</text>
+  </g>
+  <g>
+    <rect x="824" y="232" width="220" height="104" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+    <text x="844" y="264" fill="#656d76" font-family="Arial, sans-serif" font-size="13">Net</text>
+    <text x="844" y="306" fill="#1f2328" font-family="Arial, sans-serif" font-size="28" font-weight="700">CNY 8,539.50</text>
+  </g>
+  <g>
+    <rect x="1068" y="232" width="232" height="104" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+    <text x="1088" y="264" fill="#656d76" font-family="Arial, sans-serif" font-size="13">Assets</text>
+    <text x="1088" y="306" fill="#1f2328" font-family="Arial, sans-serif" font-size="28" font-weight="700">CNY 42,180.00</text>
+  </g>
+
+  <rect x="336" y="368" width="464" height="210" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <path d="M336 420H800" stroke="#d8dee4"/>
+  <text x="356" y="400" fill="#1f2328" font-family="Arial, sans-serif" font-size="16" font-weight="700">Budget progress</text>
+  <text x="356" y="456" fill="#656d76" font-family="Arial, sans-serif" font-size="13">Food</text>
+  <text x="724" y="456" fill="#656d76" font-family="Arial, sans-serif" font-size="13">64.0%</text>
+  <rect x="356" y="472" width="400" height="8" rx="4" fill="#f6f8fa"/>
+  <rect x="356" y="472" width="256" height="8" rx="4" fill="#0969da"/>
+  <text x="356" y="512" fill="#656d76" font-family="Arial, sans-serif" font-size="13">Transport</text>
+  <text x="716" y="512" fill="#656d76" font-family="Arial, sans-serif" font-size="13">42.4%</text>
+  <rect x="356" y="528" width="400" height="8" rx="4" fill="#f6f8fa"/>
+  <rect x="356" y="528" width="170" height="8" rx="4" fill="#0969da"/>
+
+  <rect x="824" y="368" width="476" height="210" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <path d="M824 420H1300" stroke="#d8dee4"/>
+  <text x="844" y="400" fill="#1f2328" font-family="Arial, sans-serif" font-size="16" font-weight="700">Recent transactions</text>
+  <text x="844" y="456" fill="#1f2328" font-family="Arial, sans-serif" font-size="14">Expense</text>
+  <text x="984" y="456" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Bank</text>
+  <text x="1110" y="456" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Food</text>
+  <text x="1210" y="456" fill="#cf222e" font-family="Arial, sans-serif" font-size="14" font-weight="700">CNY 88.80</text>
+  <path d="M844 476H1280" stroke="#d8dee4"/>
+  <text x="844" y="512" fill="#1f2328" font-family="Arial, sans-serif" font-size="14">Income</text>
+  <text x="984" y="512" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Bank</text>
+  <text x="1110" y="512" fill="#656d76" font-family="Arial, sans-serif" font-size="14">Salary</text>
+  <text x="1196" y="512" fill="#1a7f37" font-family="Arial, sans-serif" font-size="14" font-weight="700">CNY 12,800</text>
+
+  <rect x="336" y="610" width="964" height="170" rx="6" fill="#ffffff" stroke="#d0d7de"/>
+  <path d="M336 662H1300" stroke="#d8dee4"/>
+  <text x="356" y="642" fill="#1f2328" font-family="Arial, sans-serif" font-size="16" font-weight="700">Cash flow</text>
+  <text x="356" y="700" fill="#656d76" font-family="Arial, sans-serif" font-size="13">2026-06-10</text>
+  <rect x="470" y="690" width="650" height="8" rx="4" fill="#f6f8fa"/>
+  <rect x="470" y="690" width="420" height="8" rx="4" fill="#1a7f37"/>
+  <text x="1150" y="704" fill="#1a7f37" font-family="Arial, sans-serif" font-size="13" font-weight="700">CNY 12,800.00</text>
+  <text x="356" y="744" fill="#656d76" font-family="Arial, sans-serif" font-size="13">2026-06-11</text>
+  <rect x="470" y="734" width="650" height="8" rx="4" fill="#f6f8fa"/>
+  <rect x="470" y="734" width="190" height="8" rx="4" fill="#cf222e"/>
+  <text x="1166" y="748" fill="#cf222e" font-family="Arial, sans-serif" font-size="13" font-weight="700">CNY 4,260.50</text>
+</svg>

@@ -3,9 +3,11 @@ import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 import { useAuthStore } from '@/stores/auth'
+import { usePreferencesStore } from '@/stores/preferences'
 import { toErrorMessage } from '@/utils/errors'
 
 const auth = useAuthStore()
+const preferences = usePreferencesStore()
 const router = useRouter()
 const mode = ref<'login' | 'register'>('login')
 const error = ref<string | null>(null)
@@ -39,27 +41,31 @@ async function submit() {
     <section class="login-panel">
       <header class="login-panel__header">
         <h1>Bill Record</h1>
-        <p>个人记账工作台</p>
+        <p>{{ preferences.t('app.subtitle') }}</p>
       </header>
       <div class="login-panel__body">
-        <div class="segmented" role="group" aria-label="认证模式">
-          <button type="button" :aria-pressed="mode === 'login'" @click="mode = 'login'">登录</button>
-          <button type="button" :aria-pressed="mode === 'register'" @click="mode = 'register'">注册</button>
+        <div class="segmented" role="group" :aria-label="preferences.t('auth.mode')">
+          <button type="button" :aria-pressed="mode === 'login'" @click="mode = 'login'">
+            {{ preferences.t('auth.login') }}
+          </button>
+          <button type="button" :aria-pressed="mode === 'register'" @click="mode = 'register'">
+            {{ preferences.t('auth.register') }}
+          </button>
         </div>
 
         <form class="form-grid" @submit.prevent="submit">
           <div class="form-row form-row--full">
-            <label for="email">邮箱</label>
+            <label for="email">{{ preferences.t('auth.email') }}</label>
             <input id="email" v-model.trim="form.email" class="input" type="email" autocomplete="email" required />
           </div>
 
           <div v-if="mode === 'register'" class="form-row form-row--full">
-            <label for="display-name">名称</label>
+            <label for="display-name">{{ preferences.t('auth.displayName') }}</label>
             <input id="display-name" v-model.trim="form.displayName" class="input" type="text" maxlength="80" />
           </div>
 
           <div class="form-row form-row--full">
-            <label for="password">密码</label>
+            <label for="password">{{ preferences.t('auth.password') }}</label>
             <input id="password" v-model="form.password" class="input" type="password" autocomplete="current-password" minlength="8" required />
           </div>
 
@@ -67,7 +73,7 @@ async function submit() {
 
           <div class="form-actions form-row--full">
             <button class="button button--primary" type="submit" :disabled="auth.loading">
-              {{ mode === 'login' ? '登录' : '注册' }}
+              {{ mode === 'login' ? preferences.t('auth.login') : preferences.t('auth.register') }}
             </button>
           </div>
         </form>
@@ -75,4 +81,3 @@ async function submit() {
     </section>
   </main>
 </template>
-
