@@ -16,10 +16,15 @@ Testcontainers, Docker, and Docker Compose.
 docker compose up -d postgres
 JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ./mvnw test
 JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ./mvnw spring-boot:run
+cd frontend
+npm install
+npm run dev
 ```
 
 Swagger UI will be available at `http://localhost:8080/swagger-ui.html` after
-the application starts.
+the application starts. The independent Vue frontend runs at
+`http://localhost:5173` and calls `http://localhost:8080/api/v1` by default.
+Override the API URL with `frontend/.env` using `VITE_API_BASE_URL`.
 
 ### HTTP Examples
 
@@ -54,9 +59,15 @@ JUnit 5、Testcontainers、Docker 和 Docker Compose。
 docker compose up -d postgres
 JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ./mvnw test
 JAVA_HOME=/opt/homebrew/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home ./mvnw spring-boot:run
+cd frontend
+npm install
+npm run dev
 ```
 
 应用启动后，Swagger UI 地址为 `http://localhost:8080/swagger-ui.html`。
+独立 Vue 前端运行在 `http://localhost:5173`，默认调用
+`http://localhost:8080/api/v1`。如需覆盖后端地址，在 `frontend/.env`
+中设置 `VITE_API_BASE_URL`。
 
 ### HTTP 示例
 

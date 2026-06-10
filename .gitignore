@@ -5,6 +5,13 @@ target/
 .env
 *.log
 
+### Frontend ###
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/node_modules/.tmp/
+*.tsbuildinfo
+
 ### STS ###
 .apt_generated
 .classpath
